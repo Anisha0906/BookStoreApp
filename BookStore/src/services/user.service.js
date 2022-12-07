@@ -38,3 +38,18 @@ export const forgetPassword = async (body) => {
     throw new Error('user not registered');
   }
 };
+
+//Reset password
+export const NewPassword = async (body) => {
+  const saltRounds = 10;
+  const newhashPassword = await bcrypt.hash(body.password, saltRounds);
+  body.password = newhashPassword;
+  const data = await User.findOneAndUpdate(
+    {email:body.email},
+    {password:newhashPassword},
+    {
+      new: true
+    }
+  );
+  return data;
+};
