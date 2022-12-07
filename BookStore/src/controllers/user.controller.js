@@ -37,3 +37,22 @@ import * as UserService from '../services/user.service';
     next(error);
   }
 };
+
+/**
+ * Controller for forget password
+ * @param  {object} req - request object
+ * @param {object} res - response object
+ * @param {Function} next
+ */
+ export const forgetPassword = async (req, res, next) => {
+  try {
+    const data = await UserService.forgetPassword(req.body);
+    res.status(HttpStatus.CREATED).json({
+      code: HttpStatus.CREATED,
+      data:data,
+      message: 'User reset password'
+    });
+  } catch (error) {
+    next(error);
+  }
+};

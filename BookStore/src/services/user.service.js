@@ -26,3 +26,15 @@ export const login = async (body) => {
     throw new Error('invalid email');
   }
 };
+
+//forget password
+export const forgetPassword = async (body) => {
+  const data = await User.findOne({ email: body.email });
+  if (data !== null) {
+  var token = jwt.sign({email: data.email, id: data._id},process.env.SECRET_KEY
+      );
+    return token;
+  } else {
+    throw new Error('user not registered');
+  }
+};
