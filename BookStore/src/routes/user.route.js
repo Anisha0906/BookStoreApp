@@ -8,6 +8,8 @@ const router = express.Router();
 //route to register a new user
 router.post('/register', NewUserValidator, userController.RegisterNewUser);
 
+//route to login user
+router.post('/login',userController.login);
 
 
 
