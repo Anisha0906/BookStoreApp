@@ -16,9 +16,12 @@ import * as UserService from '../services/user.service';
       message: 'User created successfully'
     });
   } catch (error) {
-    next(error);
-  }
-};
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code: HttpStatus.BAD_REQUEST,
+      message: `${error}`
+      });
+      }
+  };
 /**
  * Controller to login a user
  * @param  {object} req - request object
@@ -34,9 +37,12 @@ import * as UserService from '../services/user.service';
       message: 'user login successfully'
     });
   } catch (error) {
-    next(error);
-  }
-};
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code: HttpStatus.BAD_REQUEST,
+      message: `${error}`
+      });
+      }
+  };
 
 /**
  * Controller for forget password
@@ -53,9 +59,12 @@ import * as UserService from '../services/user.service';
       message: 'User reset password'
     });
   } catch (error) {
-    next(error);
-  }
-};
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code: HttpStatus.BAD_REQUEST,
+      message: `${error}`
+      });
+      }
+  };
 /**
  * Controller to reset password
  * @param  {object} req - request object
@@ -71,6 +80,9 @@ export const NewPassword = async (req, res, next) => {
       message: 'new password created successfully'
     });
   } catch (error) {
-    next(error);
-  }
-};
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code: HttpStatus.BAD_REQUEST,
+      message: `${error}`
+      });
+      }
+  };
