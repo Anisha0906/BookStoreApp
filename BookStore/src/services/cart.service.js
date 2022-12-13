@@ -7,7 +7,7 @@ export const AddtoCart = async (body, book_id) => {
   if (data !== null) {
     const cart = await Cart.findOne({ UserID: body.UserID });
     if (cart == null) {
-      let book = [];
+      var book = [];
       data.quantity = 1;
       book.push(data);
       body.books = book;
@@ -25,11 +25,7 @@ export const AddtoCart = async (body, book_id) => {
       );
       console.log('existing', existingBook);
       if (existingBook) {
-        cart.books.map((book) => {
-          if (book._id.toString() === existingBook._id.toString()) {
-            book.quantity += 1;
-          }
-        });
+        existingBook.quantity += 1;
         cart.cart_total += existingBook.price;
         cart.save();
         return cart;
@@ -43,11 +39,11 @@ export const AddtoCart = async (body, book_id) => {
       }
     }
   } else {
-    throw new Error('book is not there ,wrong id');
+    throw new Error('book is not available');
   }
 };
 
-//remove from cart
+//remove book by quantity from cart
 export const removeFromCart = async (body, book_id) => {
   const cart = await Cart.findOne({ UserID: body.UserID });
 
@@ -56,27 +52,44 @@ export const removeFromCart = async (body, book_id) => {
       (book) => book._id.toString() === book_id.toString()
     );
 
-    console.log(' remove book if existing', ifBookPresent);
-    //if book is present in cart
+    console.log(' remove book by quantity if existing', ifBookPresent);
     if (ifBookPresent) {
-      cart.books.map((book) => {
-        if (book._id.toString() === ifBookPresent._id.toString()) {
-          book.quantity -= 1;
+      ifBookPresent.quantity -= 1;
+      if (ifBookPresent.quantity == 0) {
+        cart.books.remove(ifBookPresent);
+        cart.cart_total -=ifBookPresent.price
+      }
 
-          if (book.quantity == 0) {
-             //let index = cart.books.indexOf(book);
-           // cart.books.splice(index, 1);
-           cart.books.remove(book);
-          }
-        }
-      });
-      cart.cart_total -= ifBookPresent.price;
+      cart.cart_total -= (ifBookPresent.price*ifBookPresent.quantity);
       cart.save();
       return cart;
     } else {
       throw new Error('book is not in cart');
     }
   } else {
+    throw new Error('cart is not created');
+  }
+};
+
+//remove book from cart
+export const removeBookFromCart = async (body, book_id) => {
+  const cart = await Cart.findOne({ UserID: body.UserID });
+
+  if (cart !== null) {
+    const ifBookPresent = cart.books.find(
+      (book) => book._id.toString() === book_id.toString()
+    );
+    console.log(' remove book if existing', ifBookPresent);
+    if (ifBookPresent) {
+      cart.books.remove(ifBookPresent);
+      cart.cart_total -= (ifBookPresent.price*ifBookPresent.quantity);
+      cart.save();
+      return cart;
+    } else {
+      throw new Error('book is not in cart');
+    }
+  }
+  else {
     throw new Error('cart is not created');
   }
 };

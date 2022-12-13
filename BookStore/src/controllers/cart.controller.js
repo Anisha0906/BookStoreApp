@@ -23,7 +23,7 @@ import * as CartService from '../services/cart.service';
         }
     };
      /**
- * Controller to remove from cart
+ * Controller to remove book by quantity from cart
  * @param  {object} req - request object
  * @param {object} res - response object
  * @param {Function} next
@@ -31,6 +31,27 @@ import * as CartService from '../services/cart.service';
 export const removeFromCart = async (req, res, next) => {
   try {
     const data = await CartService.removeFromCart(req.body, req.params._id);
+    res.status(HttpStatus.OK).json({
+      code: HttpStatus.OK,
+      data: data,
+      message: 'book removed by quantity from cart successfully'
+    });
+  } catch (error) {
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code: HttpStatus.BAD_REQUEST,
+      message: `${error}`
+    });
+  }
+}; 
+ /**
+ * Controller to remove book from cart
+ * @param  {object} req - request object
+ * @param {object} res - response object
+ * @param {Function} next
+ */
+ export const removeBookFromCart = async (req, res, next) => {
+  try {
+    const data = await CartService.removeBookFromCart(req.body, req.params._id);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
