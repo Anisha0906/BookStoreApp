@@ -2,7 +2,7 @@ import HttpStatus from 'http-status-codes';
 import * as CartService from '../services/cart.service';
 
 /**
- * Controller to create a new user
+ * Controller to create a new cart
  * @param  {object} req - request object
  * @param {object} res - response object
  * @param {Function} next

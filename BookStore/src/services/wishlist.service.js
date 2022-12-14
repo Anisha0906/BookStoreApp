@@ -1,7 +1,7 @@
 import Books from '../models/book.model';
 import Wishlist from '../models/wishlist.model';
 
-//create cart
+//Add to wishlist
 export const AddtoWishlist = async (body, book_id) => {
   const checkbook = await Books.findById({ _id: book_id });
   if (checkbook !== null) {
@@ -19,5 +19,27 @@ export const AddtoWishlist = async (body, book_id) => {
     }
 } else {
     throw new Error('book is not available');
+  }
+};
+
+//Remove from wishlist
+export const RemoveFromWishlist = async (body, book_id) => {
+  const wishlist = await Wishlist.findOne({ UserID: body.UserID });
+
+  if (wishlist !== null) {
+    const ifBookPresent = wishlist.books.find(
+      (book) => book._id.toString() === book_id.toString()
+    );
+    console.log(' remove book if existing', ifBookPresent);
+    if (ifBookPresent) {
+      wishlist.books.remove(ifBookPresent);
+      wishlist.save();
+      return wishlist;
+    } else {
+      throw new Error('book is not in wishlist');
+    }
+  }
+  else {
+    throw new Error('wishlist is not created');
   }
 };

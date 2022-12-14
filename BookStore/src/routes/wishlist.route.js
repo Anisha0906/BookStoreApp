@@ -4,7 +4,9 @@ import  {userAuth}  from '../middlewares/auth.middleware';
 
 
 const router = express.Router();
-//router to create a cart
+//router to create a wishlist
 router.post('/:_id',userAuth, cartController.AddtoWishlist);
 
+//router to remove book from wishlist
+router.put('/:_id',userAuth, cartController.RemoveFromWishlist);
 export default router;
