@@ -10,7 +10,7 @@ export const AddtoCart = async (body, book_id) => {
       var book = [];
       data.quantity = 1;
       book.push(data);
-      body.books = book;
+      body.books=book
 
       const cartCreated = await Cart.create({
         UserID: body.UserID,
